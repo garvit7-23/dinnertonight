@@ -1,33 +1,11 @@
-from flask import Flask, request, jsonify, render_template
-import openai
+from flask import Flask, request, jsonify
+from transformers import pipeline
 import os
 
 app = Flask(__name__)
 
-
-
-from flask_cors import CORS
-CORS(app)  # Enable CORS for all routes
-
-
-
-
-
-# Set your OpenAI API key 
-openai.api_key = os.getenv("OPENAI_API_KEY")
-if not openai.api_key:
-    raise ValueError("OpenAI API Key is missing.")
-
-
-@app.route("/", methods=["GET", "HEAD"])
-def home():
-    if request.method == "HEAD":
-        return "", 200
-    try:
-        return render_template("index.html")
-    except Exception as e:
-        return jsonify({"error": f"Error rendering index page: {str(e)}"}), 500
-
+# Load Hugging Face's text generation model
+generator = pipeline("text-generation", model="gpt2")  # Replace with a model of your choice
 
 @app.route("/generate-bio", methods=["POST"])
 def generate_bio():
@@ -43,14 +21,8 @@ def generate_bio():
     print("Formatted user input:", user_input)  # Debug log
 
     try:
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # Change to "gpt-4" if needed
-            messages=[
-                {"role": "system", "content": "You are an assistant who generates bios based on user details."},
-                {"role": "user", "content": f"Generate a personalized bio based on these details:\n{user_input}"}
-            ]
-        )
-        bio = response['choices'][0]['message']['content'].strip()
+        # Generate bio using Hugging Face model
+        bio = generator(user_input, max_length=100, num_return_sequences=1)[0]['generated_text']
         print("Generated Bio:", bio)  # Debug log
         return jsonify({"bio": bio})
     except Exception as e:
@@ -58,5 +30,4 @@ def generate_bio():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-
     app.run(debug=True)
