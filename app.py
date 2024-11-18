@@ -57,6 +57,6 @@ def generate_bio():
         print("Error:", str(e))  # Debug log
         return jsonify({"error": str(e)}), 500
 
+if __name__ == "__main__":
 
-if _name_ == "_main_":
     app.run(debug=True)
