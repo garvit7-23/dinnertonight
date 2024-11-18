@@ -82,10 +82,7 @@
                 document.getElementById('bio-result').innerText = Error: ${error.message};
             }
         }
-    </script>
-</body>
-</html>
-async function generateBio() {
+        async function generateBio() {
     const career = document.getElementById('career').value;
     const personality = document.getElementById('personality').value;
     const interests = document.getElementById('interests').value;
@@ -118,3 +115,7 @@ async function generateBio() {
         document.getElementById('bio-result').innerText = `Error: ${error.message}`;
     }
 }
+    </script>
+</body>
+</html>
+
