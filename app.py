@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template
 import openai
 import os
 
-app = Flask(__name__, template_folder="C:\Users\ldhga\OneDrive\Desktop\dinnertonight\templates", static_folder="C:\Users\ldhga\OneDrive\Desktop\dinnertonight\static")
+app = Flask(__name__, template_folder=r"C:\Users\ldhga\OneDrive\Desktop\dinnertonight\templates", static_folder=r"C:\Users\ldhga\OneDrive\Desktop\dinnertonight\static")
 
 from flask_cors import CORS
 CORS(app)  # Enable CORS for all routes
